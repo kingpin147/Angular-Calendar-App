@@ -1,12 +1,14 @@
 <div class="calendar-container">
-    <button mat-raised-button (click)="openAppointmentForm()">Add Appointment</button>
-    <div class="calendar" cdkDropList (cdkDropListDropped)="drop($event)">
-      <div *ngFor="let date of dates" class="date-cell" cdkDropList>
-        <div class="date">{{ date | date: 'shortDate' }}</div>
-        <div *ngFor="let appointment of getAppointments(date)" cdkDrag>
-          <app-appointment-item [appointment]="appointment"></app-appointment-item>
-        </div>
+  <button mat-raised-button (click)="openAppointmentForm()">Add Appointment</button>
+  <div class="calendar" cdkDropList (cdkDropListDropped)="drop($event)">
+    <div class="week-day" *ngFor="let day of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
+      {{ day }}
+    </div>
+    <div *ngFor="let date of dates" class="date-cell" [ngClass]="{'current-month': date.getMonth() === currentMonth}" cdkDropList>
+      <div class="date">{{ date.getDate() }}</div>
+      <div *ngFor="let appointment of getAppointments(date)" cdkDrag>
+        <app-appointment-item [appointment]="appointment"></app-appointment-item>
       </div>
     </div>
   </div>
-  
+</div>

@@ -11,16 +11,43 @@ import { AppointmentService } from '../../appointment.service';
 })
 export class CalendarViewComponent {
   dates: Date[] = [];
+  currentMonth: number;
+  currentYear: number;
+
   constructor(private dialog: MatDialog, private appointmentService: AppointmentService) {
+    const today = new Date();
+    this.currentMonth = today.getMonth();
+    this.currentYear = today.getFullYear();
     this.generateDates();
   }
 
   generateDates() {
-    const today = new Date();
-    for (let i = -7; i <= 7; i++) {
-      const date = new Date();
-      date.setDate(today.getDate() + i);
-      this.dates.push(date);
+    this.dates = [];
+    const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
+    const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
+    const numberOfDays = lastDayOfMonth.getDate();
+    
+    // Get the day of the week the month starts on
+    const startDay = firstDayOfMonth.getDay();
+    
+    // Add previous month's dates to fill the grid if the month doesn't start on Sunday
+    for (let i = startDay; i > 0; i--) {
+      const prevDate = new Date(firstDayOfMonth);
+      prevDate.setDate(firstDayOfMonth.getDate() - i);
+      this.dates.push(prevDate);
+    }
+
+    // Add current month's dates
+    for (let i = 1; i <= numberOfDays; i++) {
+      this.dates.push(new Date(this.currentYear, this.currentMonth, i));
+    }
+
+    // Add next month's dates to fill the grid if the month doesn't end on Saturday
+    const endDay = lastDayOfMonth.getDay();
+    for (let i = 1; i < 7 - endDay; i++) {
+      const nextDate = new Date(lastDayOfMonth);
+      nextDate.setDate(lastDayOfMonth.getDate() + i);
+      this.dates.push(nextDate);
     }
   }
 
