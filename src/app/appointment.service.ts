@@ -27,7 +27,7 @@ export class AppointmentService {
     }
   }
 
-  moveAppointment(event: CdkDragDrop<any[]>) {
+  moveAppointment(event: CdkDragDrop<unknown[]>) {
     const prevIndex = this.appointments.findIndex((d) => d === event.item.data);
     moveItemInArray(this.appointments, prevIndex, event.currentIndex);
     this.appointmentsSubject.next(this.appointments);
