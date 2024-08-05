@@ -37,7 +37,7 @@ export class CalendarViewComponent {
     return this.appointmentService.getAppointments(date);
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<unknown[]>) {
     this.appointmentService.moveAppointment(event);
   }
 }
